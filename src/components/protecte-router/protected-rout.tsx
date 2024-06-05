@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useLoaderData, useLocation } from 'react-router-dom';
 import { AppDispatch, useSelector, useDispatch } from '../../services/store';
 import { selectAuthCheck } from '../../services/slices/userSlice';
 interface IProtectedRoutProp {
@@ -12,9 +12,16 @@ export const ProtectedRoute = ({
   requiresAuth
 }: IProtectedRoutProp) => {
   const isAuth = useSelector(selectAuthCheck);
+  const location = useLocation();
   if (requiresAuth) {
-    return isAuth ? children : <Navigate to='/login' />;
-  } else {
-    return isAuth ? <Navigate to='/' /> : children;
+    return isAuth ? (
+      children
+    ) : (
+      <Navigate replace to='/login' state={{ from: location }} />
+    );
+  }
+  if (!requiresAuth) {
+    const from = location.state?.from || { pathname: '/' };
+    return !isAuth ? children : <Navigate replace to={from} />;
   }
 };

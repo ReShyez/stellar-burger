@@ -32,7 +32,7 @@ export const feedsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getFeeds.pending, (state: any) => {
+      .addCase(getFeeds.pending, (state) => {
         state.loading = true;
         state.error = null;
       })

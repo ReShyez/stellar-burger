@@ -24,14 +24,17 @@ import { useEffect } from 'react';
 import { getIngredients } from '../../services/slices/ingredients';
 import { AppDispatch, useSelector, useDispatch } from '../../services/store';
 import { getUser } from '../../services/slices/userSlice';
+import { getMyOrders } from '../../services/slices/orderSlice';
+import { getFeeds } from '../../services/slices/feedSlice';
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getUser());
+    dispatch(getMyOrders());
+    dispatch(getFeeds());
   }, [dispatch]);
-  //Вопрос к ревьюеру - печему если мы выносим роутер компоненты отедельно ( как сейчас ) - все работает, а если мы пишем все вместе не вынося роутер компоенты то сайт перестаёт работать и появляется вот такая ошибка
-  // вот такая  useLocation() may be used only in the context of a <Router> component
+
   const RouterComponent = () => {
     const location = useLocation();
     const background = location.state && location.state.background;
@@ -65,14 +68,6 @@ const App = () => {
             element={
               <ProtectedRoute requiresAuth={false}>
                 <ForgotPassword />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/reset-password'
-            element={
-              <ProtectedRoute requiresAuth={false}>
-                <ResetPassword />
               </ProtectedRoute>
             }
           />
@@ -140,12 +135,9 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <BrowserRouter>
-        <AppHeader />
-        <RouterComponent />
-      </BrowserRouter>
+      <AppHeader />
+      <RouterComponent />
     </div>
   );
 };
 export default App;
-//для коммита4//

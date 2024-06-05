@@ -24,9 +24,7 @@ export const Profile: FC = () => {
 
   useEffect(() => {
     setFormValue((prevState) => ({
-      ...prevState,
-      name: user?.name || '',
-      email: user?.email || ''
+      ...prevState
     }));
   }, [user]);
 
@@ -38,7 +36,6 @@ export const Profile: FC = () => {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(updateUser(formValue));
-    dispatch(getUser);
     <Navigate to='/' />;
   };
 
