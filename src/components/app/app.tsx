@@ -72,6 +72,14 @@ const App = () => {
             }
           />
           <Route
+            path='/reset-password'
+            element={
+              <ProtectedRoute requiresAuth={false}>
+                <ResetPassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path='/profile'
             element={
               <ProtectedRoute requiresAuth>
