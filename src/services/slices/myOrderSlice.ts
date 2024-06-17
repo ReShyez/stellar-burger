@@ -3,7 +3,11 @@ import {
   createAsyncThunk,
   createSelector
 } from '@reduxjs/toolkit';
-import { getOrdersApi, orderBurgerApi, getOrderByNumberApi } from '@api';
+import {
+  getOrdersApi,
+  orderBurgerApi,
+  getOrderByNumberApi
+} from '../../utils/burger-api';
 import { TOrder } from '@utils-types';
 import { RootState } from '../rootReducer';
 
@@ -13,7 +17,7 @@ interface initialState {
   errorRequest: string | null;
 }
 
-const initialState: initialState = {
+export const initialState: initialState = {
   order: null,
   orderRequest: false,
   errorRequest: null
@@ -47,7 +51,8 @@ export const myOrderSlice = createSlice({
       })
       .addCase(sendOrder.rejected, (state, action) => {
         state.orderRequest = false;
-        state.errorRequest = action.error.message as string;
+        state.errorRequest =
+          (action.error.message as string) || 'Faild to fetch order';
       });
   }
 });

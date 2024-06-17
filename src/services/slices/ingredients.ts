@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import { createSlice, createAsyncThunk, createSelector} from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi } from '../../utils/burger-api';
 import { RootState } from '../store';
 import type { PayloadAction, Slice } from '@reduxjs/toolkit';
 interface IngridientsState {
@@ -14,7 +14,7 @@ interface IngridientsState {
   error: string | null;
 }
 
-const initialState: IngridientsState = {
+export const initialState: IngridientsState = {
   data:[],
   buns: [],
   sauses: [],
@@ -49,8 +49,9 @@ export const ingredientsSlice  = createSlice({
       state.mains = action.payload.filter((ingr) => ingr.type === 'main');
     })
 
-    .addCase(getIngredients.rejected, (state) => {
+    .addCase(getIngredients.rejected, (state, action) => {
       state.loading = false;
+      state.error = action.error.message || 'Failed to fetch ingredients'
     });
   },
   

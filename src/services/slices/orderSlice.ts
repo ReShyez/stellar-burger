@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   createSelector
 } from '@reduxjs/toolkit';
-import { getOrdersApi, orderBurgerApi, getOrderByNumberApi } from '@api';
+import { getOrdersApi, getOrderByNumberApi } from '../../utils/burger-api';
 import { TOrder } from '@utils-types';
 import { RootState } from '../rootReducer';
 
@@ -14,7 +14,7 @@ interface OrderState {
   error: string | null;
 }
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
   orders: [],
   selectOrder: null,
   loading: false,
@@ -51,7 +51,8 @@ export const orderSlice = createSlice({
       })
       .addCase(getSelectOrder.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message as string;
+        state.error =
+          (action.error.message as string) || 'Faild to get SelectOrder';
       })
 
       .addCase(getMyOrders.pending, (state) => {
@@ -64,7 +65,8 @@ export const orderSlice = createSlice({
       })
       .addCase(getMyOrders.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message as string;
+        state.error =
+          (action.error.message as string) || 'Faild to getMyOrders';
       });
   }
 });
