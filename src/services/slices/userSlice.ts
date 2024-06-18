@@ -9,7 +9,7 @@ import {
   TLoginData,
   updateUserApi,
   logoutApi
-} from '@api';
+} from '../../utils/burger-api';
 import { TUser } from '@utils-types';
 import { RootState } from '../rootReducer';
 import { deleteCookie, setCookie } from '../../utils/cookie';
@@ -21,7 +21,7 @@ interface IUserState {
   userRequest: boolean;
 }
 
-const initialState: IUserState = {
+export const initialState: IUserState = {
   isAuthCheck: false,
   userInfo: null,
   userError: undefined,
@@ -90,7 +90,7 @@ export const userSlice = createSlice({
       .addCase(getUser.rejected, (state, action) => {
         state.isAuthCheck = false;
         state.userRequest = false;
-        state.userError = action.error.message;
+        state.userError = action.error.message || 'Faild to get User';
       })
       //регистрация
       .addCase(registerUser.pending, (state) => {
@@ -105,7 +105,7 @@ export const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.userRequest = false;
         state.isAuthCheck = false;
-        state.userError = action.error.message;
+        state.userError = action.error.message || 'Faild to fetch registration';
       })
       //Логин
       .addCase(userLogin.pending, (state) => {
@@ -120,7 +120,7 @@ export const userSlice = createSlice({
       .addCase(userLogin.rejected, (state, action) => {
         state.userRequest = false;
         state.isAuthCheck = false;
-        state.userError = action.error.message;
+        state.userError = action.error.message || 'Faild to login';
       })
       //update
       .addCase(updateUser.pending, (state) => {
@@ -135,7 +135,7 @@ export const userSlice = createSlice({
         state.userRequest = false;
         state.userInfo = null;
         state.isAuthCheck = false;
-        state.userError = action.error.message;
+        state.userError = action.error.message || 'Faild to update User';
       })
       //выход
       .addCase(userLogout.pending, (state) => {
@@ -150,7 +150,7 @@ export const userSlice = createSlice({
       .addCase(userLogout.rejected, (state, action) => {
         state.userRequest = false;
         state.isAuthCheck = true;
-        state.userError = action.error.message;
+        state.userError = action.error.message || 'Faild to logout';
       });
   }
 });
